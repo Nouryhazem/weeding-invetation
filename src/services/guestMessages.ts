@@ -1,43 +1,17 @@
 import { GuestMessageEntry } from '../types';
 
-const STORAGE_KEY = 'wedding_ahmed_noor_guest_messages_persistent_v5';
-const LAST_SUBMIT_KEY = 'wedding_ahmed_noor_last_submit_v5';
+const STORAGE_KEY = 'wedding_ahmed_noor_guest_messages_persistent_v6';
+const LAST_SUBMIT_KEY = 'wedding_ahmed_noor_last_submit_v6';
 
-// Initial verified sample messages for the editorial marquee
-const INITIAL_DEMO_MESSAGES: GuestMessageEntry[] = [
-  {
-    id: 'msg-1',
-    name: 'عائلة الجابري',
-    message: 'ألف مبروك يا أحمد ونور، ربنا يتمملكم على ألف خير ويسعد قلوبكم دائماً.',
-    timestamp: Date.now() - 1000 * 60 * 60 * 24,
-    approved: true,
-    capsuleType: 'today',
-  },
-  {
-    id: 'msg-2',
-    name: 'م. حسام وعائلته',
-    message: 'من أحلى وأطيب القلوب.. فرحتكم فرحتنا ومستنيين ليلتكم بكل شوق ومحبة.',
-    timestamp: Date.now() - 1000 * 60 * 60 * 18,
-    approved: true,
-    capsuleType: 'today',
-  },
-  {
-    id: 'msg-3',
-    name: 'د. سارة وفارس',
-    message: 'بارك الله لكما وبارك عليكما وجمع بينكما في خير. رسالة كتبناها لكم في كبسولة الزمن لتفتحوها بعد عام وأنتم في أتم صحة وسعادة.',
-    timestamp: Date.now() - 1000 * 60 * 60 * 8,
-    approved: true,
-    capsuleType: 'anniversary',
-  },
-  {
-    id: 'msg-4',
-    name: 'أصدقاء العمر',
-    message: 'أجمل عروسين في الدنيا، منورين دايماً وفرحتنا بيكم ملهاش حدود!',
-    timestamp: Date.now() - 1000 * 60 * 60 * 2,
-    approved: true,
-    capsuleType: 'today',
-  },
-];
+// The verified wish requested for Ahmed & Noor
+export const SEED_GUEST_MESSAGE: GuestMessageEntry = {
+  id: 'msg-seed-nour',
+  name: 'Ahmed',
+  message: 'My beautiful Nour, I love you so much! Wishing you a lifetime of love and happiness 🤍',
+  timestamp: 1757361600000,
+  approved: true,
+  capsuleType: 'today',
+};
 
 export interface SendMessageResult {
   success: boolean;
@@ -46,55 +20,96 @@ export interface SendMessageResult {
 }
 
 export class GuestMessageService {
-  private static loadRawMessages(): GuestMessageEntry[] {
+  private static loadLocalMessages(): GuestMessageEntry[] {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          // Remove old 4 sample messages if they were cached previously
+          const cleaned = parsed.filter(
+            (m) =>
+              m.id !== 'msg-1' &&
+              m.id !== 'msg-2' &&
+              m.id !== 'msg-3' &&
+              m.id !== 'msg-4' &&
+              m.name !== 'عائلة الجابري' &&
+              m.name !== 'م. حسام وعائلته' &&
+              m.name !== 'د. سارة وفارس' &&
+              m.name !== 'أصدقاء العمر'
+          );
+          if (cleaned.length > 0) {
+            // Ensure the seed wish is always included
+            if (!cleaned.some((m) => m.id === 'msg-seed-nour')) {
+              cleaned.push(SEED_GUEST_MESSAGE);
+            }
+            return cleaned;
+          }
         }
       }
     } catch {
-      // ignore JSON errors
+      // ignore JSON parse errors
     }
-    // initialize storage with demo approved messages
+    const defaults = [SEED_GUEST_MESSAGE];
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_DEMO_MESSAGES));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(defaults));
     } catch {
-      // ignore
+      // ignore storage errors
     }
-    return INITIAL_DEMO_MESSAGES;
+    return defaults;
   }
 
-  private static saveRawMessages(messages: GuestMessageEntry[]): void {
+  private static saveLocalMessages(messages: GuestMessageEntry[]): void {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
       window.dispatchEvent(new Event('wedding-messages-updated'));
     } catch (err) {
-      console.error('Failed to save messages', err);
+      console.error('Failed to save messages locally', err);
     }
   }
 
   /**
-   * Retrieves ONLY approved messages for public display on the website
+   * Retrieves ONLY approved messages for public display on the website (synced with server)
    */
   static async getApprovedMessages(): Promise<GuestMessageEntry[]> {
-    const all = this.loadRawMessages();
-    return all.filter((m) => m.approved === true);
+    try {
+      const response = await fetch('/api/messages?approved=true');
+      if (response.ok) {
+        const serverMsgs: GuestMessageEntry[] = await response.json();
+        if (Array.isArray(serverMsgs) && serverMsgs.length > 0) {
+          this.saveLocalMessages(serverMsgs);
+          return serverMsgs.filter((m) => m.approved === true);
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch messages from server, using local storage cache', err);
+    }
+    const local = this.loadLocalMessages();
+    return local.filter((m) => m.approved === true);
   }
 
   /**
    * Retrieves ALL messages (pending + approved) for Admin moderation
    */
   static async getAllMessages(): Promise<GuestMessageEntry[]> {
-    return this.loadRawMessages();
+    try {
+      const response = await fetch('/api/messages');
+      if (response.ok) {
+        const serverMsgs: GuestMessageEntry[] = await response.json();
+        if (Array.isArray(serverMsgs) && serverMsgs.length > 0) {
+          this.saveLocalMessages(serverMsgs);
+          return serverMsgs;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch messages from server, using local storage cache', err);
+    }
+    return this.loadLocalMessages();
   }
 
   /**
    * Submits a guest message with capsule selection.
-   * Auto-approved so it is immediately saved and visible across refreshes,
-   * while fully manageable via the Admin modal in the footer.
+   * Auto-approved and synced across server and local storage.
    */
   static async submitMessage(
     name: string,
@@ -104,7 +119,7 @@ export class GuestMessageService {
     const trimmedName = name.trim();
     const trimmedMessage = message.trim();
 
-    // Validation
+    // Client-side validation
     if (!trimmedName) {
       return { success: false, message: 'برجاء كتابة الاسم الكريم' };
     }
@@ -124,25 +139,51 @@ export class GuestMessageService {
     // Rate limit check: 5 seconds cooldown
     const lastSubmitTime = Number(sessionStorage.getItem(LAST_SUBMIT_KEY) || '0');
     const now = Date.now();
-    if (now - lastSubmitTime < 5000) {
+    if (now - lastSubmitTime < 4000) {
       return { success: false, message: 'برجاء الانتظار ثوانٍ قليلة قبل إرسال رسالة أخرى' };
     }
 
-    // Simulate smooth processing delay
-    await new Promise((resolve) => setTimeout(resolve, 400));
-
-    const newEntry: GuestMessageEntry = {
-      id: `msg-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    const payload = {
       name: trimmedName,
       message: trimmedMessage,
-      timestamp: now,
-      approved: true, // Saved and immediately available!
       capsuleType,
     };
 
-    const current = this.loadRawMessages();
-    const updated = [newEntry, ...current];
-    this.saveRawMessages(updated);
+    let newEntry: GuestMessageEntry | null = null;
+
+    // Try server persistence
+    try {
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success && result.entry) {
+          newEntry = result.entry;
+        }
+      }
+    } catch (err) {
+      console.warn('Server message save encountered network error, falling back to local storage', err);
+    }
+
+    // Fallback if server is not reached
+    if (!newEntry) {
+      newEntry = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+        name: trimmedName,
+        message: trimmedMessage,
+        timestamp: now,
+        approved: true,
+        capsuleType,
+      };
+    }
+
+    // Update local cache
+    const current = this.loadLocalMessages();
+    const updated = [newEntry, ...current.filter((m) => m.id !== newEntry!.id)];
+    this.saveLocalMessages(updated);
     sessionStorage.setItem(LAST_SUBMIT_KEY, String(now));
 
     return { success: true, entry: newEntry };
@@ -152,11 +193,16 @@ export class GuestMessageService {
    * Admin: Approve a message to make it visible to all visitors
    */
   static async approveMessage(id: string): Promise<boolean> {
-    const all = this.loadRawMessages();
+    try {
+      await fetch(`/api/messages/${id}/approve`, { method: 'PATCH' });
+    } catch {
+      // ignore
+    }
+    const all = this.loadLocalMessages();
     const target = all.find((m) => m.id === id);
     if (target) {
       target.approved = true;
-      this.saveRawMessages([...all]);
+      this.saveLocalMessages([...all]);
       return true;
     }
     return false;
@@ -166,23 +212,33 @@ export class GuestMessageService {
    * Admin: Hide an approved message without deleting
    */
   static async hideMessage(id: string): Promise<boolean> {
-    const all = this.loadRawMessages();
+    try {
+      await fetch(`/api/messages/${id}/hide`, { method: 'PATCH' });
+    } catch {
+      // ignore
+    }
+    const all = this.loadLocalMessages();
     const target = all.find((m) => m.id === id);
     if (target) {
       target.approved = false;
-      this.saveRawMessages([...all]);
+      this.saveLocalMessages([...all]);
       return true;
     }
     return false;
   }
 
   /**
-   * Admin: Permanently delete an unwanted message
+   * Admin: Permanently delete a message
    */
   static async deleteMessage(id: string): Promise<boolean> {
-    const all = this.loadRawMessages();
+    try {
+      await fetch(`/api/messages/${id}`, { method: 'DELETE' });
+    } catch {
+      // ignore
+    }
+    const all = this.loadLocalMessages();
     const updated = all.filter((m) => m.id !== id);
-    this.saveRawMessages(updated);
+    this.saveLocalMessages(updated);
     return true;
   }
 }

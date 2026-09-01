@@ -336,7 +336,10 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
               <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-20 bg-gradient-to-l from-[#FAF7F2] to-transparent z-10 pointer-events-none" />
 
               <div className="flex w-max gap-10 sm:gap-14 animate-marquee-flow">
-                {[...publicMessages, ...publicMessages, ...publicMessages].map((msg, idx) => (
+                {(publicMessages.length < 6
+                  ? Array.from({ length: Math.ceil(8 / Math.max(publicMessages.length, 1)) }, () => publicMessages).flat()
+                  : [...publicMessages, ...publicMessages]
+                ).map((msg, idx) => (
                   <div
                     key={`${msg.id}-${idx}`}
                     className="flex flex-col justify-between py-1 pr-5 pl-2 bg-transparent relative w-72 sm:w-80 shrink-0 text-right border-r-2 border-[#7A5822]"
