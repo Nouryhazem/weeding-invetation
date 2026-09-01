@@ -1,12 +1,12 @@
 import { GuestMessageEntry } from '../types';
 
-const STORAGE_KEY = 'wedding_ahmed_noor_guest_messages_persistent_v6';
-const LAST_SUBMIT_KEY = 'wedding_ahmed_noor_last_submit_v6';
+const STORAGE_KEY = 'wedding_ahmed_noor_guest_messages_persistent_v7';
+const LAST_SUBMIT_KEY = 'wedding_ahmed_noor_last_submit_v7';
 
 // The verified wish requested for Ahmed & Noor
 export const SEED_GUEST_MESSAGE: GuestMessageEntry = {
   id: 'msg-seed-nour',
-  name: 'Ahmed',
+  name: 'Noury',
   message: 'My beautiful Nour, I love you so much! Wishing you a lifetime of love and happiness 🤍',
   timestamp: 1757361600000,
   approved: true,
@@ -22,7 +22,7 @@ export interface SendMessageResult {
 export class GuestMessageService {
   private static loadLocalMessages(): GuestMessageEntry[] {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('wedding_ahmed_noor_guest_messages_persistent_v6');
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -37,7 +37,12 @@ export class GuestMessageService {
               m.name !== 'م. حسام وعائلته' &&
               m.name !== 'د. سارة وفارس' &&
               m.name !== 'أصدقاء العمر'
-          );
+          ).map((m) => {
+            if (m.id === 'msg-seed-nour') {
+              return { ...m, name: 'Noury' };
+            }
+            return m;
+          });
           if (cleaned.length > 0) {
             // Ensure the seed wish is always included
             if (!cleaned.some((m) => m.id === 'msg-seed-nour')) {

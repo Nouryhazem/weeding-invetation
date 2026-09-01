@@ -9,7 +9,7 @@ const MESSAGES_FILE = path.join(DATA_DIR, 'messages.json');
 const INITIAL_MESSAGES = [
   {
     id: 'msg-seed-nour',
-    name: 'Ahmed',
+    name: 'Noury',
     message: 'My beautiful Nour, I love you so much! Wishing you a lifetime of love and happiness 🤍',
     timestamp: 1757361600000,
     approved: true,
