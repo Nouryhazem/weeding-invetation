@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  --font-arabic-body: "IBM Plex Sans Arabic", "Noto Naskh Arabic", "Alexandria", sans-serif;
+  --font-arabic-display: "Alexandria", "Noto Naskh Arabic", sans-serif;
+  --font-arabic-calligraphy: "Noto Naskh Arabic", "Amiri", serif;
+  --font-arabic-thin: "Alexandria", "IBM Plex Sans Arabic", sans-serif;
+  --font-serif-display: "Cormorant Garamond", "Marcellus", serif;
+  --font-sans: "Marcellus", "IBM Plex Sans Arabic", system-ui, sans-serif;
+
+  --color-ivory: #F4EEE7;
+  --color-porcelain: #FAF7F2;
+  --color-blush: #DECBC7;
+  --color-champagne: #C9AF87;
+  --color-taupe: #A6988B;
+  --color-beige: #BDB1A5;
+  --color-sage: #929889;
+  --color-olive: #62695D;
+  --color-charcoal: #463F3A;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-arabic-body);
+    font-weight: 300;
+    color: var(--color-charcoal);
+    background-color: var(--color-ivory);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    background-color: #F4EEE7;
+    font-weight: 300;
+  }
+
+  /* Ultra-delicate watercolor paper grain */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Elegant thin scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F4EEE7;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #BDB1A5;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #A6988B;
+  }
+}
+
+.font-calligraphy-ar {
+  font-family: var(--font-arabic-calligraphy);
+  font-weight: 400;
+}
+
+.font-display-ar {
+  font-family: var(--font-arabic-display);
+  font-weight: 200;
+  letter-spacing: 0.02em;
+}
+
+.font-body-ar {
+  font-family: var(--font-arabic-body);
+  font-weight: 300;
+}
+
+.font-serif-en {
+  font-family: var(--font-serif-display);
+  font-weight: 300;
+}
+
+.font-sans-en {
+  font-family: var(--font-sans);
+  font-weight: 300;
+}
+
+/* Subtle watercolor stationery shadow */
+.stationery-card-shadow {
+  box-shadow: 0 12px 32px -8px rgba(70, 63, 58, 0.04), 0 0 0 1px rgba(201, 175, 135, 0.2);
+}
+
+.stationery-hairline {
+  border: 1px solid rgba(201, 175, 135, 0.25);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(50%);
+  }
+}
+
+
+
