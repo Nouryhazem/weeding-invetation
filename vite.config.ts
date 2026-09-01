@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/weeding-invitation/',
+    base: './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
