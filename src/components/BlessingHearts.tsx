@@ -24,14 +24,14 @@ interface FloatingHeartItem {
 
 const STORAGE_HEARTS_DATA_KEY = 'wedding_ahmed_noor_blessing_hearts_list_v1';
 
-// Identity Color Palette for hearts: Outline Gold & Ivory tones (Transparent fill, outline only)
+// Identity Color Palette for hearts: High-Contrast Outline Gold & Bronze tones
 const OUTLINE_HEART_COLORS = [
-  '#C9AF87', // Luminous Gold / Champagne
-  '#B89968', // Antique Warm Gold
-  '#A98A59', // Classic Champagne Gold
-  '#8C6D3B', // Deep Antique Bronze Gold
-  '#D4C5A9', // Pale Ivory Gold
-  '#9E8256', // Soft Taupe Gold
+  '#7A5822', // Rich Antique Gold
+  '#593E1A', // Deep Bronze Gold
+  '#8C6D3B', // Classic Gold
+  '#634718', // Warm Brown Gold
+  '#4A3311', // Dark Gold
+  '#1F331D', // Deep Sage Green Accent
 ];
 
 // Helper to deterministically generate visual positioning and variety across the entire section
@@ -238,7 +238,7 @@ export const BlessingHearts: React.FC<BlessingHeartsProps> = () => {
                   d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
                   fill="none"
                   stroke={heart.color}
-                  strokeWidth="1.5"
+                  strokeWidth="2.2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -258,9 +258,9 @@ export const BlessingHearts: React.FC<BlessingHeartsProps> = () => {
           whileHover={{ scale: 1.1, rotate: 6 }}
           whileTap={{ scale: 0.92 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="group w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-[#FAF7F2]/95 hover:bg-[#F6EFE5] backdrop-blur-xs border border-[#A98A59]/80 hover:border-[#8C6D3B] text-[#8C6D3B] hover:text-[#A98A59] rounded-full shadow-[0_2px_16px_rgba(169,138,89,0.16)] hover:shadow-[0_4px_22px_rgba(169,138,89,0.28)] transition-all duration-300 cursor-pointer focus:outline-hidden"
+          className="group w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-white hover:bg-[#F6EFE5] border-2 border-[#7A5822] text-[#7A5822] hover:text-[#593E1A] rounded-full shadow-lg transition-all duration-300 cursor-pointer focus:outline-hidden"
         >
-          <Heart className="w-6 h-6 sm:w-7 sm:h-7 stroke-[1.4] transition-transform duration-300 group-hover:scale-110" />
+          <Heart className="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.2] transition-transform duration-300 group-hover:scale-110" />
         </motion.button>
       </div>
     </section>

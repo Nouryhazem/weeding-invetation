@@ -72,7 +72,7 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
   return (
     <section
       id="guestbook"
-      className="relative py-24 sm:py-32 md:py-40 px-6 sm:px-10 md:px-16 bg-[#FAF7F2] text-[#231C18] overflow-hidden select-none border-b border-[#E8DFC2]/60"
+      className="relative py-24 sm:py-32 md:py-40 px-6 sm:px-10 md:px-16 bg-[#FAF7F2] text-[#110D0B] overflow-hidden select-none border-b border-[#D8CCA8]"
     >
       {/* Ambient Watercolor Washes */}
       <div className="absolute top-0 right-10 w-96 h-96 bg-radial from-[#F5EFE6]/70 via-[#FAF7F2]/20 to-transparent blur-3xl pointer-events-none -translate-y-16" />
@@ -88,18 +88,18 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
           className="flex flex-col items-center text-center mb-12 sm:mb-16"
         >
           <div className="flex items-center gap-3 mb-4 justify-center">
-            <div className="w-8 sm:w-12 h-[1px] bg-[#8C6D3B]/40" />
-            <span className="font-serif-en text-[10px] sm:text-[11px] md:text-xs tracking-[0.4em] uppercase text-[#8C6D3B] font-medium">
+            <div className="w-8 sm:w-12 h-[1.5px] bg-[#7A5822]" />
+            <span className="font-serif-en text-[11px] sm:text-xs md:text-sm tracking-[0.4em] uppercase text-[#634718] font-bold">
               WISHES &amp; TIME CAPSULE
             </span>
-            <div className="w-8 sm:w-12 h-[1px] bg-[#8C6D3B]/40" />
+            <div className="w-8 sm:w-12 h-[1.5px] bg-[#7A5822]" />
           </div>
 
-          <h2 className="font-display-ar text-2xl sm:text-3xl md:text-[34px] font-normal text-[#1E1815] leading-[1.35] tracking-wide mb-3">
+          <h2 className="font-display-ar text-2xl sm:text-3xl md:text-[34px] font-bold text-[#110D0B] leading-[1.35] tracking-wide mb-3">
             كلمة منكم… وذكرى لينا
           </h2>
 
-          <p className="font-display-ar text-sm sm:text-base text-[#4A3E36] font-light leading-relaxed max-w-md">
+          <p className="font-display-ar text-sm sm:text-base text-[#241C16] font-medium leading-relaxed max-w-md">
             اكتبولنا كلمة لليلة دي، أو سيبوا رسالة نخبيها ونفتحها في أول ذكرى جواز لينا.
           </p>
         </motion.div>
@@ -114,7 +114,7 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
         >
           {/* Organic Switcher (No Box, Pure Typography & Line Indicator) */}
           <div className="flex flex-col items-center mb-12">
-            <div className="flex items-center justify-center gap-8 sm:gap-14 border-b border-[#E8DFC2]/80 pb-3.5 w-full max-w-md">
+            <div className="flex items-center justify-center gap-8 sm:gap-14 border-b-2 border-[#D8CCA8] pb-3.5 w-full max-w-md">
               <button
                 type="button"
                 onClick={() => {
@@ -123,20 +123,20 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                 }}
                 className={`relative pb-1.5 transition-all duration-300 cursor-pointer flex flex-col items-center ${
                   capsuleType === 'today'
-                    ? 'text-[#1E1815] font-medium'
-                    : 'text-[#6E5F53] opacity-60 hover:opacity-90 font-light'
+                    ? 'text-[#110D0B] font-bold'
+                    : 'text-[#5C4D3F] hover:text-[#110D0B] font-medium'
                 }`}
               >
                 <span className="font-display-ar text-sm sm:text-[15px]">
                   تهنئة لليلة الزفاف
                 </span>
-                <span className="font-serif-en text-[10px] text-[#8C6D3B] tracking-wider uppercase font-medium mt-0.5">
+                <span className="font-serif-en text-[10.5px] text-[#7A5822] tracking-wider uppercase font-bold mt-0.5">
                   TONIGHT
                 </span>
                 {capsuleType === 'today' && (
                   <motion.div
                     layoutId="activeWishesTab"
-                    className="absolute -bottom-[15px] left-0 right-0 h-[2px] bg-[#8C6D3B]"
+                    className="absolute -bottom-[16px] left-0 right-0 h-[2.5px] bg-[#7A5822]"
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                   />
                 )}
@@ -150,20 +150,20 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                 }}
                 className={`relative pb-1.5 transition-all duration-300 cursor-pointer flex flex-col items-center ${
                   capsuleType === 'anniversary'
-                    ? 'text-[#1E1815] font-medium'
-                    : 'text-[#6E5F53] opacity-60 hover:opacity-90 font-light'
+                    ? 'text-[#110D0B] font-bold'
+                    : 'text-[#5C4D3F] hover:text-[#110D0B] font-medium'
                 }`}
               >
                 <span className="font-display-ar text-sm sm:text-[15px]">
                   رسالة لأول ذكرى
                 </span>
-                <span className="font-serif-en text-[10px] text-[#8C6D3B] tracking-wider uppercase font-medium mt-0.5">
+                <span className="font-serif-en text-[10.5px] text-[#7A5822] tracking-wider uppercase font-bold mt-0.5">
                   YEAR 2027
                 </span>
                 {capsuleType === 'anniversary' && (
                   <motion.div
                     layoutId="activeWishesTab"
-                    className="absolute -bottom-[15px] left-0 right-0 h-[2px] bg-[#8C6D3B]"
+                    className="absolute -bottom-[16px] left-0 right-0 h-[2.5px] bg-[#7A5822]"
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                   />
                 )}
@@ -181,7 +181,7 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                   transition={{ duration: 0.45 }}
                   className="mt-4 text-center max-w-sm"
                 >
-                  <p className="font-display-ar text-xs text-[#52634D] font-normal leading-relaxed italic">
+                  <p className="font-display-ar text-xs sm:text-sm text-[#1F331D] font-bold leading-relaxed italic">
                     «الرسالة دي هنحتفظ بيها مقفولة، ونرجعلها سوا يوم 8 سبتمبر 2027… في أول ذكرى جواز لينا»
                   </p>
                 </motion.div>
@@ -205,7 +205,7 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="guest-input-name"
-                    className="font-display-ar text-xs text-[#8C6D3B] font-medium tracking-wide"
+                    className="font-display-ar text-xs sm:text-sm text-[#634718] font-bold tracking-wide"
                   >
                     اسمكم الكريم
                   </label>
@@ -217,7 +217,7 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                     onChange={(e) => setName(e.target.value)}
                     maxLength={50}
                     disabled={loading}
-                    className="w-full py-3 px-1 bg-transparent border-b border-[#D8CCBA] focus:border-[#8C6D3B] text-[#1E1815] font-display-ar text-base sm:text-lg font-light placeholder:text-[#A6988B] placeholder:font-extralight focus:outline-hidden transition-colors duration-400"
+                    className="w-full py-3 px-1 bg-transparent border-b-2 border-[#D8CCA8] focus:border-[#7A5822] text-[#110D0B] font-display-ar text-base sm:text-lg font-medium placeholder:text-[#695D51] focus:outline-hidden transition-colors duration-300"
                   />
                 </div>
 
@@ -225,7 +225,7 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="guest-input-message"
-                    className="font-display-ar text-xs text-[#8C6D3B] font-medium tracking-wide"
+                    className="font-display-ar text-xs sm:text-sm text-[#634718] font-bold tracking-wide"
                   >
                     رسالتكم
                   </label>
@@ -237,17 +237,17 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                     onChange={(e) => setMessage(e.target.value)}
                     maxLength={500}
                     disabled={loading}
-                    className="w-full py-3 px-1 bg-transparent border-b border-[#D8CCBA] focus:border-[#8C6D3B] text-[#1E1815] font-display-ar text-base sm:text-lg font-light placeholder:text-[#A6988B] placeholder:font-extralight focus:outline-hidden resize-none leading-relaxed transition-colors duration-400"
+                    className="w-full py-3 px-1 bg-transparent border-b-2 border-[#D8CCA8] focus:border-[#7A5822] text-[#110D0B] font-display-ar text-base sm:text-lg font-medium placeholder:text-[#695D51] focus:outline-hidden resize-none leading-relaxed transition-colors duration-300"
                   />
-                  <div className="flex justify-start text-[11px] text-[#A6988B] font-light pt-1">
+                  <div className="flex justify-start text-xs text-[#5C4D3F] font-bold pt-1">
                     <span>{500 - message.length} حرف متبقي</span>
                   </div>
                 </div>
 
                 {/* Error Banner */}
                 {errorMessage && (
-                  <div className="flex items-center gap-2 p-3 bg-[#FAF7F2] border border-red-200 rounded-xl text-red-800 text-xs font-display-ar font-light">
-                    <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+                  <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-300 rounded-xl text-red-900 text-xs font-display-ar font-bold">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-red-700" />
                     <span>{errorMessage}</span>
                   </div>
                 )}
@@ -261,11 +261,11 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                    className="inline-flex items-center justify-center gap-2 px-12 py-3.5 bg-[#FAF7F2] hover:bg-[#F6EFE5] border border-[#8C6D3B]/80 hover:border-[#8C6D3B] text-[#1E1815] font-display-ar text-sm font-normal tracking-wider rounded-full shadow-[0_2px_12px_rgba(140,109,59,0.12)] hover:shadow-[0_4px_18px_rgba(140,109,59,0.22)] transition-all duration-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-hidden"
+                    className="inline-flex items-center justify-center gap-2 px-14 py-3.5 bg-white hover:bg-[#F6EFE5] border-2 border-[#7A5822] text-[#110D0B] font-display-ar text-sm font-bold tracking-wider rounded-full shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-hidden"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin text-[#52634D]" />
+                        <Loader2 className="w-4 h-4 animate-spin text-[#1F331D]" />
                         <span>جاري الحفظ...</span>
                       </>
                     ) : (
@@ -283,13 +283,13 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-col items-center text-center py-8"
               >
-                <div className="w-10 h-10 rounded-full bg-[#52634D]/10 flex items-center justify-center mb-4 text-[#52634D]">
-                  <Check className="w-5 h-5 stroke-[2]" />
+                <div className="w-12 h-12 rounded-full bg-green-100 border border-green-300 flex items-center justify-center mb-4 text-[#1F331D]">
+                  <Check className="w-6 h-6 stroke-[2.5]" />
                 </div>
-                <p className="font-display-ar text-lg sm:text-xl text-[#1E1815] font-normal leading-relaxed mb-2">
+                <p className="font-display-ar text-lg sm:text-xl text-[#110D0B] font-bold leading-relaxed mb-2">
                   وصلت رسالتكم بكل حب، ومستنيانا في وقتها.
                 </p>
-                <p className="font-display-ar text-xs sm:text-sm text-[#6E5F53] font-light mb-6">
+                <p className="font-display-ar text-xs sm:text-sm text-[#241C16] font-medium mb-6">
                   شكراً لمشاركتنا فرحتنا وكلماتكم الطيبة
                 </p>
 
@@ -299,7 +299,7 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                     soundEffects.playSoftTap();
                     setIsSuccess(false);
                   }}
-                  className="font-display-ar text-xs sm:text-sm text-[#52634D] hover:text-[#1E1815] transition-colors border-b border-[#52634D]/40 pb-0.5 cursor-pointer font-light"
+                  className="font-display-ar text-xs sm:text-sm text-[#1F331D] hover:text-black font-bold transition-colors border-b-2 border-[#1F331D] pb-0.5 cursor-pointer"
                 >
                   كتابة رسالة أخرى
                 </button>
@@ -315,14 +315,14 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.9, delay: 0.2 }}
-            className="w-full mt-20 sm:mt-24 pt-12 border-t border-[#E8DFC2]/60 flex flex-col items-center"
+            className="w-full mt-20 sm:mt-24 pt-12 border-t-2 border-[#D8CCA8] flex flex-col items-center"
           >
             <div className="flex items-center gap-3 mb-8 justify-center">
-              <div className="w-6 sm:w-10 h-[1px] bg-[#8C6D3B]/30" />
-              <span className="font-serif-en text-[10px] sm:text-[11px] tracking-[0.35em] uppercase text-[#8C6D3B] font-medium">
+              <div className="w-6 sm:w-10 h-[1.5px] bg-[#7A5822]" />
+              <span className="font-serif-en text-[10.5px] sm:text-[12px] tracking-[0.35em] uppercase text-[#634718] font-bold">
                 GUEST WORDS &amp; MEMORIES
               </span>
-              <div className="w-6 sm:w-10 h-[1px] bg-[#8C6D3B]/30" />
+              <div className="w-6 sm:w-10 h-[1.5px] bg-[#7A5822]" />
             </div>
 
             {/* Seamless, Non-Boxy Continuous Marquee Slider */}
@@ -339,23 +339,23 @@ export const GuestMessage: React.FC<GuestMessageProps> = ({ data: _data }) => {
                 {[...publicMessages, ...publicMessages, ...publicMessages].map((msg, idx) => (
                   <div
                     key={`${msg.id}-${idx}`}
-                    className="flex flex-col justify-between py-1 pr-5 pl-2 bg-transparent relative w-72 sm:w-80 shrink-0 text-right border-r border-[#8C6D3B]/25"
+                    className="flex flex-col justify-between py-1 pr-5 pl-2 bg-transparent relative w-72 sm:w-80 shrink-0 text-right border-r-2 border-[#7A5822]"
                   >
                     <div>
                       {msg.capsuleType === 'anniversary' && (
-                        <span className="font-serif-en text-[9px] text-[#8C6D3B] tracking-widest uppercase block mb-1.5 font-medium">
+                        <span className="font-serif-en text-[10px] text-[#7A5822] tracking-widest uppercase block mb-1.5 font-bold">
                           1st Anniversary Capsule
                         </span>
                       )}
-                      <p className="font-display-ar text-xs sm:text-[13px] text-[#231C18] leading-relaxed font-light italic line-clamp-3">
+                      <p className="font-display-ar text-xs sm:text-[13.5px] text-[#110D0B] leading-relaxed font-bold italic line-clamp-3">
                         «{msg.message}»
                       </p>
                     </div>
 
                     {msg.name && (
                       <div className="flex items-center gap-2 mt-3.5">
-                        <div className="w-3.5 h-[1px] bg-[#52634D]/40" />
-                        <span className="font-display-ar text-xs text-[#52634D] font-normal">
+                        <div className="w-4 h-[1.5px] bg-[#1F331D]" />
+                        <span className="font-display-ar text-xs sm:text-sm text-[#1F331D] font-bold">
                           {msg.name}
                         </span>
                       </div>

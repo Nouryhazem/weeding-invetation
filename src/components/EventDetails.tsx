@@ -76,7 +76,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
     <section
       id="details"
       ref={containerRef}
-      className="relative bg-[#FAF7F2] text-[#463F3A] py-20 sm:py-28 md:py-36 px-4 sm:px-8 md:px-12 overflow-hidden select-none border-b border-[#EBE4D8]"
+      className="relative bg-[#FAF7F2] text-[#110D0B] py-20 sm:py-28 md:py-36 px-4 sm:px-8 md:px-12 overflow-hidden select-none border-b border-[#D8CCA8]"
     >
       <div className="max-w-3xl mx-auto flex flex-col items-center">
         
@@ -88,10 +88,10 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-16 sm:mb-20 md:mb-24"
         >
-          <span className="font-serif-en text-[11px] sm:text-xs tracking-[0.45em] uppercase text-[#9A8A7A] block mb-2 sm:mb-3 font-light">
+          <span className="font-serif-en text-[11px] sm:text-xs tracking-[0.45em] uppercase text-[#634718] block mb-2 sm:mb-3 font-bold">
             CELEBRATION DETAILS
           </span>
-          <h2 className="font-display-ar text-2xl sm:text-3xl md:text-4xl font-extralight text-[#3D3732] tracking-wide">
+          <h2 className="font-display-ar text-2xl sm:text-3xl md:text-4xl font-bold text-[#110D0B] tracking-wide">
             تفاصيل ليلتنا
           </h2>
         </motion.div>
@@ -102,11 +102,11 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
         <div className="relative w-full max-w-2xl px-2 sm:px-6">
           
           {/* Vertical Track Line on the right side (RTL) */}
-          <div className="absolute top-6 bottom-6 right-6 sm:right-10 w-[1px] bg-[#E5DCD0]" />
+          <div className="absolute top-6 bottom-6 right-6 sm:right-10 w-[2px] bg-[#D8CCA8]" />
 
           {/* Dynamic Scroll Progress Line */}
           <motion.div
-            className="absolute top-6 right-6 sm:right-10 w-[1.5px] bg-[#7A8A74] origin-top z-0"
+            className="absolute top-6 right-6 sm:right-10 w-[2px] bg-[#1F331D] origin-top z-0"
             style={{
               height: progressLine,
               maxHeight: 'calc(100% - 48px)',
@@ -123,7 +123,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
                   onClick={() => setActiveIndex(idx)}
                   className="flex items-start gap-4 sm:gap-7 cursor-pointer group transition-all duration-700"
                   style={{
-                    opacity: isActive ? 1 : 0.35,
+                    opacity: isActive ? 1 : 0.65,
                     transform: isActive ? 'scale(1)' : 'scale(0.98)',
                     transition: 'all 700ms cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
@@ -135,8 +135,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
                     <div
                       className={`relative flex items-center justify-center transition-all duration-700 rounded-full ${
                         isActive
-                          ? 'w-7 h-7 sm:w-8 sm:h-8 bg-[#FAF7F2] shadow-[0_2px_10px_rgba(122,138,116,0.2)]'
-                          : 'w-4 h-4 sm:w-5 sm:h-5 bg-[#FAF7F2] ring-1 ring-[#D8CCBA]'
+                          ? 'w-7 h-7 sm:w-8 sm:h-8 bg-white border-2 border-[#1F331D] shadow-[0_2px_10px_rgba(31,51,29,0.3)]'
+                          : 'w-4 h-4 sm:w-5 sm:h-5 bg-white ring-2 ring-[#7A5822]'
                       }`}
                     >
                       {isActive ? (
@@ -151,14 +151,14 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
                         </motion.div>
                       ) : (
                         /* Inactive Minimal Node */
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#B8ABA0] group-hover:bg-[#7A8A74] transition-colors" />
+                        <div className="w-2 h-2 rounded-full bg-[#7A5822] group-hover:bg-[#1F331D] transition-colors" />
                       )}
                     </div>
 
                     {/* Step Number */}
                     <span
-                      className={`font-serif-en text-[10px] tracking-widest mt-2 transition-colors duration-500 uppercase select-none ${
-                        isActive ? 'text-[#7A8A74] font-medium' : 'text-[#B8ABA0]'
+                      className={`font-serif-en text-[11px] tracking-widest mt-2 transition-colors duration-500 uppercase select-none ${
+                        isActive ? 'text-[#1F331D] font-bold' : 'text-[#634718] font-bold'
                       }`}
                     >
                       {item.number}
@@ -170,12 +170,12 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
                     
                     {/* Category Label with Small White Accent Flower for Active Item */}
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className="font-serif-en text-xs tracking-[0.25em] text-[#9A8A7A] uppercase font-light">
+                      <span className="font-serif-en text-xs tracking-[0.25em] text-[#634718] uppercase font-bold">
                         {item.number} —
                       </span>
                       <span
-                        className={`font-display-ar text-sm sm:text-base font-light transition-colors duration-500 ${
-                          isActive ? 'text-[#6E8068] font-normal' : 'text-[#8A7C6E]'
+                        className={`font-display-ar text-sm sm:text-base transition-colors duration-500 ${
+                          isActive ? 'text-[#1F331D] font-bold' : 'text-[#634718] font-bold'
                         }`}
                       >
                         {item.category}
@@ -184,8 +184,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
 
                     {/* Main Arabic Title */}
                     <h3
-                      className={`font-display-ar text-xl sm:text-2xl md:text-3xl font-extralight leading-snug transition-colors duration-500 ${
-                        isActive ? 'text-[#2D2622]' : 'text-[#4A423B]'
+                      className={`font-display-ar text-xl sm:text-2xl md:text-3xl font-bold leading-snug transition-colors duration-500 ${
+                        isActive ? 'text-[#110D0B]' : 'text-[#241C16]'
                       }`}
                     >
                       {item.titleAr}
@@ -193,13 +193,13 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
 
                     {/* Optional Address Subtitle */}
                     {item.subtitleAr && (
-                      <p className="font-body-ar text-xs sm:text-sm text-[#73685E] font-light mt-0.5">
+                      <p className="font-body-ar text-xs sm:text-sm text-[#241C16] font-medium mt-0.5">
                         {item.subtitleAr}
                       </p>
                     )}
 
                     {/* English Sub-label */}
-                    <p className="font-serif-en text-[11px] sm:text-xs text-[#8E8377] font-light tracking-wide mt-1.5">
+                    <p className="font-serif-en text-[11.5px] sm:text-xs text-[#634718] font-bold tracking-wide mt-1.5">
                       {item.titleEn}
                     </p>
 
@@ -210,10 +210,10 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ data }) => {
                           href={item.actionLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-display-ar text-[#6E8068] hover:text-[#4F5E4B] transition-colors font-light border-b border-[#7A8A74]/35 pb-0.5 group/link"
+                          className="inline-flex items-center gap-1.5 text-xs font-display-ar text-[#1F331D] hover:text-black font-bold transition-colors border-b-2 border-[#1F331D] pb-0.5 group/link"
                         >
                           <span>{item.actionText}</span>
-                          <ExternalLink className="w-3 h-3 stroke-[1.4] transition-transform group-hover/link:translate-x-[-2px] group-hover/link:-translate-y-[2px]" />
+                          <ExternalLink className="w-3.5 h-3.5 stroke-[2] transition-transform group-hover/link:translate-x-[-2px] group-hover/link:-translate-y-[2px]" />
                         </a>
                       </div>
                     )}

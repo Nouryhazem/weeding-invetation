@@ -34,7 +34,7 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
   return (
     <section
       id="countdown"
-      className="relative w-full flex flex-col items-center justify-center text-center overflow-hidden bg-[#FAF7F2] py-12 sm:py-16 md:py-20 px-4 select-none border-b border-[#EBE4D8]"
+      className="relative w-full flex flex-col items-center justify-center text-center overflow-hidden bg-[#FAF7F2] py-12 sm:py-16 md:py-20 px-4 select-none border-b border-[#D8CCA8]"
     >
       {/* Central Content Layer */}
       <div className="relative z-10 max-w-2xl w-full mx-auto flex flex-col items-center justify-center">
@@ -55,18 +55,18 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
                     <div className="h-14 sm:h-20 md:h-24 overflow-hidden flex items-center justify-center" dir="ltr">
                       <RollingGoldNumber value={unit.value} />
                     </div>
-                    {/* English and Arabic Sub-labels */}
-                    <span className="font-serif-en text-[9px] sm:text-[11px] md:text-xs tracking-[0.3em] sm:tracking-[0.38em] text-[#9A825F] uppercase font-light mt-1">
+                    {/* English and Arabic Sub-labels - Highest Contrast */}
+                    <span className="font-serif-en text-[10px] sm:text-[11.5px] md:text-xs tracking-[0.3em] sm:tracking-[0.38em] text-[#634718] uppercase font-bold mt-1">
                       {unit.label}
                     </span>
-                    <span className="font-display-ar text-[10px] sm:text-xs text-[#7A6C5B] font-extralight mt-0.5">
+                    <span className="font-display-ar text-[11px] sm:text-xs text-[#110D0B] font-bold mt-0.5">
                       {unit.labelAr}
                     </span>
                   </div>
 
                   {/* Elegant Golden Separator Dot between units */}
                   {idx < units.length - 1 && (
-                    <div className="font-serif-en text-xl sm:text-3xl md:text-4xl text-[#B39972] font-light opacity-80 self-center mb-6 sm:mb-8 select-none">
+                    <div className="font-serif-en text-xl sm:text-3xl md:text-4xl text-[#7A5822] font-bold self-center mb-6 sm:mb-8 select-none">
                       ·
                     </div>
                   )}
@@ -81,15 +81,15 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
           <motion.div
             initial={{ scale: 0.96, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="p-6 sm:p-8 rounded-3xl bg-[#FAF7F2]/80 backdrop-blur-xs border border-[#C9AF87]/35 max-w-md shadow-xs text-center"
+            className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-[#7A5822] max-w-md shadow-md text-center"
           >
-            <p className="font-display-ar text-xl sm:text-2xl text-[#463F3A] font-light leading-relaxed">
+            <p className="font-display-ar text-xl sm:text-2xl text-[#110D0B] font-bold leading-relaxed">
               اليوم هو موعد الفرح والسرور
             </p>
-            <p className="font-calligraphy-ar text-base text-[#6E6356] mt-2 font-normal">
+            <p className="font-calligraphy-ar text-base sm:text-lg text-[#110D0B] mt-2 font-bold">
               فرحتنا تكتمل بوجودكم بيننا الليلة
             </p>
-            <span className="font-serif-en italic text-xs text-[#9E8765] tracking-widest block mt-3 font-light">
+            <span className="font-serif-en italic text-xs text-[#7A5822] tracking-widest block mt-3 font-bold">
               TONIGHT AT 8:00 PM
             </span>
           </motion.div>
@@ -100,9 +100,9 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="p-6 sm:p-8 rounded-3xl bg-[#FAF7F2]/80 backdrop-blur-xs border border-[#BDB1A5]/35 max-w-md shadow-xs text-center"
+            className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-[#1F331D] max-w-md shadow-md text-center"
           >
-            <p className="font-calligraphy-ar text-lg sm:text-xl text-[#5E695A] leading-relaxed font-normal">
+            <p className="font-calligraphy-ar text-lg sm:text-xl text-[#1F331D] leading-relaxed font-bold">
               كانت ليلة لا تُنسى بوجودكم ومحبتكم. دامت دياركم عامرة بالأفراح.
             </p>
           </motion.div>
@@ -116,10 +116,10 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-6 sm:mt-8 flex flex-col items-center"
         >
-          <span className="font-serif-en italic text-base sm:text-xl md:text-2xl text-[#8E7655] font-light tracking-wide">
+          <span className="font-serif-en italic text-lg sm:text-xl md:text-2xl text-[#634718] font-bold tracking-wide">
             until we say I do
           </span>
-          <span className="font-calligraphy-ar text-sm sm:text-base text-[#685D51] mt-1 font-normal opacity-85">
+          <span className="font-calligraphy-ar text-sm sm:text-base text-[#110D0B] mt-1 font-bold">
             حتى نلتقي ونعقد عهد العمر
           </span>
         </motion.div>
@@ -150,9 +150,9 @@ const RollingGoldNumber: React.FC<RollingGoldNumberProps> = ({ value }) => {
               animate={{ y: '0%', opacity: 1 }}
               exit={{ y: '-50%', opacity: 0 }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="font-serif-en text-4xl sm:text-6xl md:text-7xl font-extralight text-[#8E714B] tracking-tight block select-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.7)]"
+              className="font-serif-en text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight block select-none drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]"
               style={{
-                background: 'linear-gradient(180deg, #7A5E38 0%, #A28255 60%, #765B36 100%)',
+                background: 'linear-gradient(180deg, #593E1A 0%, #876228 50%, #4D3312 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}

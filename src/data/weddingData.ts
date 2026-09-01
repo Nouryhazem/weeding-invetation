@@ -1,5 +1,4 @@
 import { WeddingData } from '../types';
-import coupleImg from '../assets/Couple.png';
 import heroImg from '../assets/hero.PNG';
 
 export const weddingData: WeddingData = {
@@ -14,18 +13,18 @@ export const weddingData: WeddingData = {
   venueAddress: "قاعة لوفلي - سمالوط",
   mapsUrl: "https://share.google/dS03lh4MEM9UUdfPz",
   calendarUrl: "",
-  heroImage: heroImg || coupleImg,
-  portraitAhmed: coupleImg,
-  portraitNoor: coupleImg,
+  heroImage: heroImg,
+  portraitAhmed: heroImg,
+  portraitNoor: heroImg,
   venueImage: "/images/venue.webp",
-  closingImage: coupleImg,
+  closingImage: heroImg,
   showPortraitQuotes: true,
   ahmedQuote: "أجمل ما في العمر أن أبدأ معكِ حكايتنا الأبدية",
   noorQuote: "وبك تكتمل كل أمنياتي وفرحتي الكبرى",
   journeyImages: [
     {
       id: "j1",
-      src: coupleImg,
+      src: heroImg,
       caption: "بداية الحكاية",
       subtitle: "حيث التقت القلوب وبدأ عهد المحبة",
       objectPosition: "center top",
@@ -33,7 +32,7 @@ export const weddingData: WeddingData = {
     },
     {
       id: "j2",
-      src: coupleImg,
+      src: heroImg,
       caption: "وعد بالبقاء",
       subtitle: "يداً بيد نحو كل ما هو قادم وجميل",
       objectPosition: "center center",
@@ -41,7 +40,7 @@ export const weddingData: WeddingData = {
     },
     {
       id: "j3",
-      src: coupleImg,
+      src: heroImg,
       caption: "فرحة العمر",
       subtitle: "لحظات نخلدها بحب يدوم مدى الأيام",
       objectPosition: "center center",
@@ -49,7 +48,7 @@ export const weddingData: WeddingData = {
     },
     {
       id: "j4",
-      src: coupleImg,
+      src: heroImg,
       caption: "والفرحة تكتمل بكم",
       subtitle: "ليلتنا المنتظرة تزهو بحضوركم الغالي",
       objectPosition: "center center",

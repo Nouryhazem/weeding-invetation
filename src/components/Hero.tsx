@@ -146,11 +146,11 @@ export const Hero: React.FC<HeroProps> = ({ data, preloaderFinished }) => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex items-center gap-3 mb-5 sm:mb-7"
         >
-          <span className="w-8 sm:w-12 h-[1px] bg-gradient-to-r from-transparent to-[#967845]/70" />
-          <span className="font-serif-en text-[9px] sm:text-[10.5px] tracking-[0.55em] uppercase text-[#54473C] font-normal">
+          <span className="w-8 sm:w-12 h-[1.5px] bg-gradient-to-r from-transparent to-[#7A5822]" />
+          <span className="font-serif-en text-[10px] sm:text-[11.5px] tracking-[0.55em] uppercase text-[#634718] font-bold">
             THE WEDDING CELEBRATION
           </span>
-          <span className="w-8 sm:w-12 h-[1px] bg-gradient-to-l from-transparent to-[#967845]/70" />
+          <span className="w-8 sm:w-12 h-[1.5px] bg-gradient-to-l from-transparent to-[#7A5822]" />
         </motion.div>
 
         {/* Strongest Visual Focal Element: Names in Deep Rich Charcoal Espresso */}
@@ -161,11 +161,11 @@ export const Hero: React.FC<HeroProps> = ({ data, preloaderFinished }) => {
           transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="mb-2.5 sm:mb-4"
         >
-          <h1 className="font-display-ar text-6xl sm:text-8xl md:text-9xl lg:text-[9.5rem] font-light text-[#1A1512] tracking-wider leading-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]">
+          <h1 className="font-display-ar text-6xl sm:text-8xl md:text-9xl lg:text-[9.5rem] font-bold text-[#110D0B] tracking-wider leading-none drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]">
             <span className="inline-block">
               {data.groomArabic}
             </span>
-            <span className="mx-3 sm:mx-6 md:mx-8 font-serif-en italic text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-[#967845] font-light inline-block align-middle">
+            <span className="mx-3 sm:mx-6 md:mx-8 font-serif-en italic text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-[#7A5822] font-bold inline-block align-middle">
               &amp;
             </span>
             <span className="inline-block">
@@ -179,17 +179,17 @@ export const Hero: React.FC<HeroProps> = ({ data, preloaderFinished }) => {
           initial={{ opacity: 0 }}
           animate={preloaderFinished ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.45 }}
-          className="font-serif-en text-[9.5px] sm:text-[11px] tracking-[0.5em] text-[#584B3E] uppercase mb-4 sm:mb-5 font-normal"
+          className="font-serif-en text-[10.5px] sm:text-[12px] tracking-[0.5em] text-[#110D0B] uppercase mb-4 sm:mb-5 font-bold"
         >
           {data.groomEnglish} &amp; {data.brideEnglish}
         </motion.div>
 
-        {/* Supporting Arabic Welcoming Sentence in High Contrast */}
+        {/* Supporting Arabic Welcoming Sentence in Highest Contrast */}
         <motion.p
           initial={{ opacity: 0, y: 6 }}
           animate={preloaderFinished ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.85, delay: 0.55 }}
-          className="font-calligraphy-ar text-base sm:text-lg md:text-xl text-[#2F2721] font-normal max-w-md mx-auto mb-5 sm:mb-6 leading-relaxed"
+          className="font-calligraphy-ar text-base sm:text-lg md:text-xl text-[#110D0B] font-bold max-w-md mx-auto mb-5 sm:mb-6 leading-relaxed"
         >
           يسعدنا ويشرفنا حضوركم ومشاركتنا فرحة العمر
         </motion.p>
@@ -199,29 +199,29 @@ export const Hero: React.FC<HeroProps> = ({ data, preloaderFinished }) => {
           initial={{ scaleX: 0, opacity: 0 }}
           animate={preloaderFinished ? { scaleX: 1, opacity: 1 } : {}}
           transition={{ duration: 0.9, delay: 0.65 }}
-          className="w-20 sm:w-28 h-[1px] bg-gradient-to-r from-transparent via-[#967845]/70 to-transparent mb-4 sm:mb-5"
+          className="w-20 sm:w-28 h-[1.5px] bg-gradient-to-r from-transparent via-[#7A5822] to-transparent mb-4 sm:mb-5"
         />
 
-        {/* Single Refined Editorial Line in High Contrast */}
+        {/* Single Refined Editorial Line in Highest Contrast */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={preloaderFinished ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.85, delay: 0.75 }}
-          className="flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-1 text-center font-normal"
+          className="flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-1 text-center font-bold"
         >
-          <span className="font-display-ar text-sm sm:text-base md:text-lg font-light tracking-wider text-[#1A1512]">
+          <span className="font-display-ar text-sm sm:text-base md:text-lg font-bold tracking-wider text-[#110D0B]">
             الثلاثاء، ٨ سبتمبر ٢٠٢٦
           </span>
           
-          <span className="text-[#967845] font-serif-en text-sm font-semibold select-none">·</span>
+          <span className="text-[#7A5822] font-serif-en text-base font-bold select-none">·</span>
           
-          <span className="font-display-ar text-sm sm:text-base md:text-lg font-light text-[#352C25]">
+          <span className="font-display-ar text-sm sm:text-base md:text-lg font-bold text-[#110D0B]">
             ٨:٠٠ مساءً
           </span>
 
-          <span className="text-[#967845] font-serif-en text-sm font-semibold select-none">·</span>
+          <span className="text-[#7A5822] font-serif-en text-base font-bold select-none">·</span>
 
-          <span className="font-serif-en text-sm sm:text-base md:text-lg font-medium tracking-wide text-[#283E26]">
+          <span className="font-serif-en text-sm sm:text-base md:text-lg font-bold tracking-wide text-[#1F331D]">
             {data.venueName}
           </span>
         </motion.div>
@@ -234,15 +234,15 @@ export const Hero: React.FC<HeroProps> = ({ data, preloaderFinished }) => {
         initial={{ opacity: 0, y: 8 }}
         animate={preloaderFinished ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 1, delay: 0.95 }}
-        className="absolute bottom-6 sm:bottom-8 z-10 flex items-center justify-center text-[#7A5C28] hover:text-[#4A3818] transition-colors cursor-pointer group focus:outline-hidden p-2"
+        className="absolute bottom-6 sm:bottom-8 z-10 flex items-center justify-center text-[#7A5822] hover:text-[#110D0B] transition-colors cursor-pointer group focus:outline-hidden p-2"
         aria-label="الانتقال للأسفل"
       >
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#967845]/40 flex items-center justify-center bg-[#FAF7F2]/80 backdrop-blur-xs group-hover:border-[#967845] transition-all shadow-xs"
+          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-[#7A5822] flex items-center justify-center bg-white/90 backdrop-blur-xs group-hover:bg-white transition-all shadow-xs"
         >
-          <ChevronDown className="w-4 h-4 text-[#7A5C28] stroke-[1.6]" />
+          <ChevronDown className="w-4 h-4 text-[#7A5822] stroke-[2.2]" />
         </motion.div>
       </motion.button>
     </section>
