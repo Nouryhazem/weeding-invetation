@@ -8,15 +8,18 @@
   --font-serif-display: "Cormorant Garamond", "Marcellus", serif;
   --font-sans: "Marcellus", "IBM Plex Sans Arabic", system-ui, sans-serif;
 
-  --color-ivory: #F4EEE7;
-  --color-porcelain: #FAF7F2;
-  --color-blush: #DECBC7;
-  --color-champagne: #C9AF87;
-  --color-taupe: #A6988B;
-  --color-beige: #BDB1A5;
-  --color-sage: #929889;
-  --color-olive: #62695D;
-  --color-charcoal: #463F3A;
+  --color-ivory: #FAF7F2;
+  --color-parchment: #F6F0E8;
+  --color-porcelain: #FFFFFF;
+  --color-champagne-primary: #8C6D3B;
+  --color-champagne-light: #B89968;
+  --color-taupe: #4A3E36;
+  --color-taupe-light: #6E5F53;
+  --color-sage: #52634D;
+  --color-sage-pale: #7D8E78;
+  --color-lavender-blue: #9BA0B8;
+  --color-dark: #231C18;
+  --color-dark-text: #1E1815;
 }
 
 @layer base {
@@ -24,7 +27,7 @@
     scroll-behavior: smooth;
     font-family: var(--font-arabic-body);
     font-weight: 300;
-    color: var(--color-charcoal);
+    color: var(--color-dark);
     background-color: var(--color-ivory);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -35,7 +38,7 @@
     overflow-x: hidden;
     min-height: 100vh;
     position: relative;
-    background-color: #F4EEE7;
+    background-color: #FAF7F2;
     font-weight: 300;
   }
 
@@ -49,7 +52,7 @@
     height: 100vh;
     pointer-events: none;
     z-index: 9999;
-    opacity: 0.035;
+    opacity: 0.025;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 
@@ -58,14 +61,14 @@
     width: 5px;
   }
   ::-webkit-scrollbar-track {
-    background: #F4EEE7;
+    background: #FAF7F2;
   }
   ::-webkit-scrollbar-thumb {
-    background: #BDB1A5;
+    background: #D8CCBA;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #A6988B;
+    background: #BFAFA0;
   }
 }
 
@@ -104,13 +107,21 @@
   border: 1px solid rgba(201, 175, 135, 0.25);
 }
 
-@keyframes marquee {
+@keyframes marquee-flow {
   0% {
     transform: translateX(0%);
   }
   100% {
     transform: translateX(50%);
   }
+}
+
+.animate-marquee-flow {
+  animation: marquee-flow 42s linear infinite;
+}
+
+.animate-marquee-flow:hover {
+  animation-play-state: paused;
 }
 
 

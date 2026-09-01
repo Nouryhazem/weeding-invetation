@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { WeddingData } from '../types';
 import { calculateCountdown, CountdownResult, formatTwoDigits } from '../utils/formatters';
-import countdownBg from '../assets/countdown.png';
 
 interface CountdownProps {
   data: WeddingData;
@@ -14,13 +13,17 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
   );
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const updateCountdown = () => {
       setCountdown(calculateCountdown(data.date, data.time));
-    }, 1000);
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
   }, [data.date, data.time]);
 
+  // Explicit LTR units layout so Days is first on the left (or right with explicit labels)
   const units = [
     { label: 'DAYS', labelAr: 'يوم', value: formatTwoDigits(countdown.days) },
     { label: 'HOURS', labelAr: 'ساعة', value: formatTwoDigits(countdown.hours) },
@@ -31,60 +34,25 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
   return (
     <section
       id="countdown"
-      className="relative min-h-screen w-full flex flex-col items-center justify-center text-center overflow-hidden bg-[#F7F2EB] py-16 sm:py-24 px-4 select-none"
+      className="relative w-full flex flex-col items-center justify-center text-center overflow-hidden bg-[#FAF7F2] py-12 sm:py-16 md:py-20 px-4 select-none border-b border-[#EBE4D8]"
     >
-      {/* 1. Full-Bleed High-Res Watercolor Art Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <img
-          src={countdownBg}
-          alt="Counting the days countdown background"
-          className="w-full h-full object-cover object-center sm:object-[center_35%] filter brightness-[1.01] contrast-[1.01]"
-        />
-        {/* Soft atmospheric gradient wash to ensure pristine readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F7F2EB]/35 via-transparent to-[#F7F2EB]/40" />
-      </div>
-
-      {/* 2. Central Editorial Content Layer */}
-      <div className="relative z-10 max-w-2xl w-full mx-auto flex flex-col items-center justify-center my-auto pt-16 sm:pt-20 pb-28 sm:pb-36">
-        
-        {/* Editorial Eyebrow: COUNTING THE DAYS */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col items-center mb-6 sm:mb-8"
-        >
-          <span className="font-serif-en text-xs sm:text-sm md:text-base tracking-[0.45em] sm:tracking-[0.55em] text-[#9E8765] uppercase font-light drop-shadow-xs">
-            COUNTING THE DAYS
-          </span>
-          <span className="font-calligraphy-ar text-sm sm:text-base text-[#6E6356] mt-1 font-normal opacity-85">
-            نعدّ الأيام واللحظات حتى موعد الفرح
-          </span>
-          
-          {/* Subtle Vintage Flourish / Ornament Line */}
-          <div className="flex items-center gap-2 mt-3 opacity-60">
-            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-[#A9916F]" />
-            <span className="w-1.5 h-1.5 rotate-45 border border-[#A9916F] bg-transparent" />
-            <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-[#A9916F]" />
-          </div>
-        </motion.div>
-
+      {/* Central Content Layer */}
+      <div className="relative z-10 max-w-2xl w-full mx-auto flex flex-col items-center justify-center">
         {/* The Golden Live Digits with Separator Dots */}
         {countdown.status === 'upcoming' && (
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center w-full my-2"
           >
-            {/* Live Numbers Row with Separator Dots */}
-            <div className="flex items-baseline justify-center gap-1.5 sm:gap-4 md:gap-6 flex-wrap">
+            {/* Live Numbers Row with explicit LTR order for numerals so 07 always displays left-to-right as 0 then 7 */}
+            <div dir="ltr" className="flex items-baseline justify-center gap-1.5 sm:gap-4 md:gap-6 flex-wrap">
               {units.map((unit, idx) => (
                 <React.Fragment key={unit.label}>
                   <div className="flex flex-col items-center min-w-[58px] sm:min-w-[76px] md:min-w-[90px]">
-                    <div className="h-14 sm:h-20 md:h-24 overflow-hidden flex items-center justify-center">
+                    <div className="h-14 sm:h-20 md:h-24 overflow-hidden flex items-center justify-center" dir="ltr">
                       <RollingGoldNumber value={unit.value} />
                     </div>
                     {/* English and Arabic Sub-labels */}
@@ -145,7 +113,7 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.35 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-6 sm:mt-8 flex flex-col items-center"
         >
           <span className="font-serif-en italic text-base sm:text-xl md:text-2xl text-[#8E7655] font-light tracking-wide">
@@ -155,7 +123,6 @@ export const Countdown: React.FC<CountdownProps> = ({ data }) => {
             حتى نلتقي ونعقد عهد العمر
           </span>
         </motion.div>
-
       </div>
     </section>
   );
@@ -169,11 +136,12 @@ const RollingGoldNumber: React.FC<RollingGoldNumberProps> = ({ value }) => {
   const chars = value.split('');
 
   return (
-    <div className="flex items-center gap-0.5 sm:gap-1">
+    <div className="flex items-center gap-0.5 sm:gap-1" dir="ltr">
       {chars.map((char, index) => (
         <div
           key={index}
           className="relative h-14 sm:h-20 md:h-24 w-6 sm:w-8 md:w-10 overflow-hidden flex items-center justify-center"
+          dir="ltr"
         >
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.span

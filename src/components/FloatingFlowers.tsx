@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-interface Petal {
+interface WhiteFlower {
   x: number;
   y: number;
   size: number;
@@ -11,11 +11,12 @@ interface Petal {
   oscillationSpeed: number;
   oscillationDistance: number;
   opacity: number;
-  type: 'flower' | 'singlePetal' | 'miniBlossom' | 'sageLeaf';
-  petalColor: string;
-  centerColor: string;
   sinAngle: number;
-  depthFactor: number; // 0.6 (far) to 1.4 (close) for parallax depth
+  petalCount: number; // 5 or 6 delicate petals
+  depthFactor: number; // 0.6 (far/small) to 1.3 (close/crisp)
+  petalTint: string; // Soft porcelain white & subtle watercolor variations
+  centerTint: string; // Antique champagne center
+  hasDropShadow: boolean;
 }
 
 export const FloatingFlowers: React.FC = () => {
@@ -47,8 +48,8 @@ export const FloatingFlowers: React.FC = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      const deltaX = (e.clientX - mouseX) * 0.003;
-      windForce = Math.max(-2.5, Math.min(2.5, windForce + deltaX));
+      const deltaX = (e.clientX - mouseX) * 0.002;
+      windForce = Math.max(-1.8, Math.min(1.8, windForce + deltaX));
       mouseX = e.clientX;
       mouseY = e.clientY;
     };
@@ -61,12 +62,12 @@ export const FloatingFlowers: React.FC = () => {
 
       // Calculate instantaneous scroll velocity in px/frame
       const instantVelocity = (deltaY / dt) * 16;
-      scrollVelocity += instantVelocity * 0.6;
-      // Cap max scroll impulse so it stays refined and elegant
-      scrollVelocity = Math.max(-25, Math.min(25, scrollVelocity));
+      scrollVelocity += instantVelocity * 0.7;
+      // Cap scroll impulse gracefully for pure calm motion
+      scrollVelocity = Math.max(-20, Math.min(20, scrollVelocity));
 
-      // Add gentle horizontal sway based on scroll direction
-      windForce += (deltaY > 0 ? 0.25 : -0.25) * Math.min(1.5, Math.abs(deltaY) * 0.02);
+      // Gentle horizontal sway with scroll direction
+      windForce += (deltaY > 0 ? 0.2 : -0.2) * Math.min(1.2, Math.abs(deltaY) * 0.015);
 
       lastScrollY = currentScrollY;
       lastScrollTime = now;
@@ -76,319 +77,177 @@ export const FloatingFlowers: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Palette of refined ivory, pure porcelain white, soft blush, champagne gold, and muted sage
-    const petalColors = [
+    // Premium porcelain white & soft champagne tints
+    const whitePetalGradients = [
       'rgba(255, 255, 255, 0.92)',
-      'rgba(253, 250, 246, 0.95)',
-      'rgba(247, 241, 234, 0.88)',
-      'rgba(244, 238, 231, 0.82)',
-      'rgba(238, 225, 220, 0.7)',
+      'rgba(253, 250, 246, 0.88)',
+      'rgba(250, 247, 242, 0.85)',
+      'rgba(246, 240, 232, 0.80)',
     ];
 
-    const sageColors = [
-      'rgba(141, 158, 139, 0.82)', // Muted sage
-      'rgba(126, 140, 122, 0.85)', // Dusty olive-sage
-      'rgba(157, 174, 153, 0.78)', // Pale grey-sage
-      'rgba(110, 122, 107, 0.80)', // Deep soft olive
+    const centerGradients = [
+      'rgba(169, 138, 89, 0.85)',  // Antique champagne gold
+      'rgba(184, 155, 107, 0.85)', // Light champagne gold
+      'rgba(201, 175, 135, 0.80)', // Pale gold
     ];
 
-    const centerColors = [
-      'rgba(201, 175, 135, 0.9)',
-      'rgba(222, 203, 199, 0.9)',
-      'rgba(215, 190, 155, 0.85)',
-    ];
+    // Rich presence of animated white botanical flowers (28 to 44 flowers across viewport)
+    const flowerCount = window.innerWidth < 768 ? 22 : 38;
+    const flowers: WhiteFlower[] = [];
 
-    // Flower count scaled nicely for both desktop and mobile
-    const petalCount = window.innerWidth < 768 ? 26 : 46;
-    const petals: Petal[] = [];
+    for (let i = 0; i < flowerCount; i++) {
+      const depthFactor = Math.random() * 0.7 + 0.6; // 0.6 to 1.3
 
-    for (let i = 0; i < petalCount; i++) {
-      const types: ('flower' | 'singlePetal' | 'miniBlossom' | 'sageLeaf')[] = [
-        'flower',
-        'singlePetal',
-        'singlePetal',
-        'miniBlossom',
-        'sageLeaf',
-      ];
-      const type = types[Math.floor(Math.random() * types.length)];
-      const depthFactor = Math.random() * 0.9 + 0.6; // 0.6 to 1.5
-
-      const isSage = type === 'sageLeaf';
-
-      petals.push({
+      flowers.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        size:
-          type === 'flower'
-            ? (Math.random() * 6 + 8) * depthFactor
-            : isSage
-            ? (Math.random() * 4 + 6) * depthFactor
-            : (Math.random() * 4 + 5) * depthFactor,
-        baseSpeedY: (Math.random() * 0.55 + 0.3) * depthFactor,
-        speedX: (Math.random() * 0.35 - 0.17) * depthFactor,
+        size: (Math.random() * 5 + 6.5) * depthFactor, // Elegant 7px to 15px radius
+        baseSpeedY: (Math.random() * 0.3 + 0.18) * depthFactor, // Slow, peaceful drift
+        speedX: (Math.random() * 0.2 - 0.1) * depthFactor,
         rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.02,
-        oscillationSpeed: Math.random() * 0.02 + 0.012,
+        rotationSpeed: (Math.random() - 0.5) * 0.008, // Slow, calm rotation
+        oscillationSpeed: Math.random() * 0.012 + 0.006,
         oscillationDistance: (Math.random() * 1.5 + 0.8) * depthFactor,
-        opacity: (Math.random() * 0.35 + 0.5) * Math.min(1, depthFactor),
-        type,
-        petalColor: isSage
-          ? sageColors[Math.floor(Math.random() * sageColors.length)]
-          : petalColors[Math.floor(Math.random() * petalColors.length)],
-        centerColor: centerColors[Math.floor(Math.random() * centerColors.length)],
+        opacity: (Math.random() * 0.35 + 0.55) * Math.min(1, depthFactor), // Bright & visible
         sinAngle: Math.random() * Math.PI * 2,
+        petalCount: Math.random() > 0.3 ? 5 : 6,
         depthFactor,
+        petalTint: whitePetalGradients[Math.floor(Math.random() * whitePetalGradients.length)],
+        centerTint: centerGradients[Math.floor(Math.random() * centerGradients.length)],
+        hasDropShadow: depthFactor > 0.95,
       });
     }
 
-    // Helper to draw a delicate muted sage / olive leaf with organic vein
-    const drawSageLeaf = (
+    // Helper to draw an exquisite layered porcelain white botanical flower
+    const drawWhiteBotanicalFlower = (
       context: CanvasRenderingContext2D,
       x: number,
       y: number,
       size: number,
       rotation: number,
-      leafColor: string,
-      opacity: number
+      petalCount: number,
+      petalTint: string,
+      centerTint: string,
+      opacity: number,
+      hasDropShadow: boolean
     ) => {
       context.save();
       context.translate(x, y);
       context.rotate(rotation);
       context.globalAlpha = opacity;
 
-      // Soft pointed oval leaf
-      context.beginPath();
-      context.moveTo(0, -size * 1.2);
-      context.bezierCurveTo(
-        size * 0.55,
-        -size * 0.6,
-        size * 0.5,
-        size * 0.6,
-        0,
-        size * 1.1
-      );
-      context.bezierCurveTo(
-        -size * 0.5,
-        size * 0.6,
-        -size * 0.55,
-        -size * 0.6,
-        0,
-        -size * 1.2
-      );
+      if (hasDropShadow) {
+        context.shadowColor = 'rgba(80, 72, 64, 0.08)';
+        context.shadowBlur = 4;
+        context.shadowOffsetY = 2;
+      }
 
-      context.fillStyle = leafColor;
-      context.fill();
-
-      // Delicate central leaf vein
-      context.beginPath();
-      context.moveTo(0, -size * 0.9);
-      context.lineTo(0, size * 0.8);
-      context.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-      context.lineWidth = 0.6;
-      context.stroke();
-
-      context.restore();
-    };
-
-    // Helper to draw a delicate 5-petal white flower with golden center
-    const drawFlower = (
-      context: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      size: number,
-      rotation: number,
-      petalColor: string,
-      centerColor: string,
-      opacity: number
-    ) => {
-      context.save();
-      context.translate(x, y);
-      context.rotate(rotation);
-      context.globalAlpha = opacity;
-
-      // 5 Soft Petals
-      const count = 5;
-      for (let i = 0; i < count; i++) {
+      // Outer delicate petals
+      for (let i = 0; i < petalCount; i++) {
         context.save();
-        context.rotate((i * (Math.PI * 2)) / count);
+        context.rotate((i * (Math.PI * 2)) / petalCount);
 
         context.beginPath();
         context.moveTo(0, 0);
         context.bezierCurveTo(
-          -size * 0.38,
-          -size * 0.65,
-          -size * 0.3,
-          -size * 1.15,
+          -size * 0.42,
+          -size * 0.6,
+          -size * 0.32,
+          -size * 1.18,
           0,
           -size * 1.25
         );
         context.bezierCurveTo(
-          size * 0.3,
-          -size * 1.15,
-          size * 0.38,
-          -size * 0.65,
+          size * 0.32,
+          -size * 1.18,
+          size * 0.42,
+          -size * 0.6,
           0,
           0
         );
 
-        context.fillStyle = petalColor;
+        context.fillStyle = petalTint;
         context.fill();
 
-        // Subtle petal vein highlight
+        // Delicate champagne-white inner petal ridge linework
         context.beginPath();
-        context.moveTo(0, -size * 0.2);
+        context.moveTo(0, -size * 0.15);
         context.lineTo(0, -size * 0.85);
-        context.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        context.strokeStyle = 'rgba(201, 175, 135, 0.35)';
         context.lineWidth = 0.5;
         context.stroke();
 
         context.restore();
       }
 
-      // Flower Golden/Champagne Center Core
+      // Inner Layer: Soft golden-champagne pistil core
       context.beginPath();
-      context.arc(0, 0, size * 0.24, 0, Math.PI * 2);
-      context.fillStyle = centerColor;
+      context.arc(0, 0, size * 0.26, 0, Math.PI * 2);
+      context.fillStyle = centerTint;
       context.fill();
 
-      // Tiny Stamen highlight
+      // Delicate bright stamen dot
       context.beginPath();
-      context.arc(0, 0, size * 0.12, 0, Math.PI * 2);
+      context.arc(0, 0, size * 0.13, 0, Math.PI * 2);
       context.fillStyle = '#FFFFFF';
       context.fill();
 
       context.restore();
     };
 
-    // Helper to draw a single drifting blossom petal
-    const drawSinglePetal = (
-      context: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      size: number,
-      rotation: number,
-      petalColor: string,
-      opacity: number
-    ) => {
-      context.save();
-      context.translate(x, y);
-      context.rotate(rotation);
-      context.globalAlpha = opacity;
-
-      context.beginPath();
-      context.moveTo(0, -size);
-      context.bezierCurveTo(
-        size * 0.6,
-        -size * 0.5,
-        size * 0.65,
-        size * 0.4,
-        0,
-        size
-      );
-      context.bezierCurveTo(
-        -size * 0.65,
-        size * 0.4,
-        -size * 0.6,
-        -size * 0.5,
-        0,
-        -size
-      );
-
-      context.fillStyle = petalColor;
-      context.fill();
-
-      // Subtle translucent edge
-      context.strokeStyle = 'rgba(255, 255, 255, 0.55)';
-      context.lineWidth = 0.5;
-      context.stroke();
-
-      context.restore();
-    };
-
-    // Main Animation Loop with dynamic scroll response
+    // Main Animation Loop with precise scroll sensing
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
       // Smoothly damp scroll velocity & wind
-      scrollVelocity *= 0.92;
-      smoothedScrollVelocity += (scrollVelocity - smoothedScrollVelocity) * 0.12;
-      windForce *= 0.95;
+      scrollVelocity *= 0.93;
+      smoothedScrollVelocity += (scrollVelocity - smoothedScrollVelocity) * 0.14;
+      windForce *= 0.96;
 
-      for (let i = 0; i < petals.length; i++) {
-        const p = petals[i];
+      for (let i = 0; i < flowers.length; i++) {
+        const f = flowers[i];
 
-        p.sinAngle += p.oscillationSpeed;
-        const oscillation = Math.sin(p.sinAngle) * p.oscillationDistance;
+        f.sinAngle += f.oscillationSpeed;
+        const oscillation = Math.sin(f.sinAngle) * f.oscillationDistance;
 
-        // Dynamic Speed Calculation based on scroll speed & depth factor
-        const dynamicSpeedY = p.baseSpeedY + (smoothedScrollVelocity * 0.75 * p.depthFactor);
+        // Dynamic Speed Calculation directly sensing scroll speed and parallax depth
+        const dynamicSpeedY = f.baseSpeedY + (smoothedScrollVelocity * 0.85 * f.depthFactor);
         const dynamicRotationSpeed =
-          p.rotationSpeed * (1 + Math.abs(smoothedScrollVelocity) * 0.25);
+          f.rotationSpeed * (1 + Math.abs(smoothedScrollVelocity) * 0.3);
 
         // Position Updates
-        p.y += dynamicSpeedY;
-        p.x += p.speedX + oscillation + (windForce * p.depthFactor);
-        p.rotation += dynamicRotationSpeed;
+        f.y += dynamicSpeedY;
+        f.x += f.speedX + oscillation + (windForce * f.depthFactor);
+        f.rotation += dynamicRotationSpeed;
 
-        // Boundary Wrap-around with generous margin
-        if (p.y > height + 60) {
-          p.y = -60;
-          p.x = Math.random() * width;
-        } else if (p.y < -60) {
-          p.y = height + 60;
-          p.x = Math.random() * width;
+        // Wrap around seamlessly across screen bounds
+        if (f.y > height + 60) {
+          f.y = -60;
+          f.x = Math.random() * width;
+        } else if (f.y < -60) {
+          f.y = height + 60;
+          f.x = Math.random() * width;
         }
 
-        if (p.x > width + 60) {
-          p.x = -60;
-        } else if (p.x < -60) {
-          p.x = width + 60;
+        if (f.x > width + 60) {
+          f.x = -60;
+        } else if (f.x < -60) {
+          f.x = width + 60;
         }
 
-        // Render with Apple-grade fidelity
-        if (p.type === 'flower') {
-          drawFlower(
-            ctx,
-            p.x,
-            p.y,
-            p.size,
-            p.rotation,
-            p.petalColor,
-            p.centerColor,
-            p.opacity
-          );
-        } else if (p.type === 'miniBlossom') {
-          drawFlower(
-            ctx,
-            p.x,
-            p.y,
-            p.size * 0.65,
-            p.rotation,
-            p.petalColor,
-            p.centerColor,
-            p.opacity * 0.9
-          );
-        } else if (p.type === 'sageLeaf') {
-          drawSageLeaf(
-            ctx,
-            p.x,
-            p.y,
-            p.size,
-            p.rotation,
-            p.petalColor,
-            p.opacity
-          );
-        } else {
-          drawSinglePetal(
-            ctx,
-            p.x,
-            p.y,
-            p.size,
-            p.rotation,
-            p.petalColor,
-            p.opacity
-          );
-        }
+        // Render white flower with smooth aesthetic
+        drawWhiteBotanicalFlower(
+          ctx,
+          f.x,
+          f.y,
+          f.size,
+          f.rotation,
+          f.petalCount,
+          f.petalTint,
+          f.centerTint,
+          f.opacity,
+          f.hasDropShadow
+        );
       }
 
       animationFrameId = requestAnimationFrame(render);

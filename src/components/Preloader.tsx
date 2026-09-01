@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { WeddingData } from '../types';
 import { preloadImage } from '../utils/imageManifest';
 import preloaderVideo from '../assets/preloader.MP4';
-import { ChevronDown, Play } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
+import { soundEffects } from '../utils/soundEffects';
 
 interface PreloaderProps {
   data: WeddingData;
@@ -15,6 +16,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ data, onComplete }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const transitionTriggeredRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (data.heroImage) {
@@ -30,43 +32,58 @@ export const Preloader: React.FC<PreloaderProps> = ({ data, onComplete }) => {
     }
   }, []);
 
-  // Pure White Flash Bloom Transition into the Hero
+  // Smooth, Cinema-Grade Luminous Transition into the Hero (Triggered in the last 2 seconds)
   const triggerWhiteTransition = useCallback(() => {
-    if (isTransitioning || isCompleted) return;
+    if (transitionTriggeredRef.current || isCompleted) return;
+    transitionTriggeredRef.current = true;
     setIsTransitioning(true);
+    soundEffects.playEtherealBellChord();
 
-    // Fade out audio gracefully if active
+    // Smoothly fade out audio over ~1.8 seconds
     if (videoRef.current) {
       const vid = videoRef.current;
       try {
-        const fadeAudio = setInterval(() => {
-          if (vid.volume > 0.15) {
-            vid.volume -= 0.15;
+        const fadeInterval = setInterval(() => {
+          if (vid.volume > 0.05) {
+            vid.volume = Math.max(0, vid.volume - 0.05);
           } else {
             vid.volume = 0;
-            vid.pause();
-            clearInterval(fadeAudio);
+            clearInterval(fadeInterval);
           }
-        }, 30);
+        }, 80);
       } catch {
-        vid.pause();
+        // ignore
       }
     }
 
-    // White flash reaches apex -> Hero becomes active behind it
+    // Hero becomes active when white bloom reaches peak opacity
     setTimeout(() => {
       onComplete();
-    }, 450);
+    }, 1100);
 
-    // Fade out white flash completely
+    // Fade out white transition overlay completely
     setTimeout(() => {
       setIsCompleted(true);
-    }, 1200);
-  }, [isTransitioning, isCompleted, onComplete]);
+    }, 2200);
+  }, [isCompleted, onComplete]);
+
+  // Listen to playback time to smoothly trigger transition during the final 2 seconds
+  const handleTimeUpdate = useCallback(() => {
+    const vid = videoRef.current;
+    if (!vid || transitionTriggeredRef.current || isCompleted) return;
+    
+    if (vid.duration && vid.duration > 2.5) {
+      const timeLeft = vid.duration - vid.currentTime;
+      if (timeLeft <= 2.0 && timeLeft > 0) {
+        triggerWhiteTransition();
+      }
+    }
+  }, [triggerWhiteTransition, isCompleted]);
 
   // Highly robust click / tap handler for all mobile and desktop devices
   const handlePlayClick = useCallback(() => {
-    if (isTransitioning || isCompleted) return;
+    soundEffects.init();
+    if (transitionTriggeredRef.current || isCompleted) return;
     const vid = videoRef.current;
     if (!vid) {
       triggerWhiteTransition();
@@ -74,7 +91,6 @@ export const Preloader: React.FC<PreloaderProps> = ({ data, onComplete }) => {
     }
 
     if (vid.paused) {
-      // First attempt: unmuted audio with video
       vid.muted = false;
       const playPromise = vid.play();
       if (playPromise !== undefined) {
@@ -83,7 +99,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ data, onComplete }) => {
             setIsPlaying(true);
           })
           .catch((err) => {
-            console.warn('Audio play restricted by browser, playing with muted audio fallback:', err);
+            console.warn('Audio play restricted by browser, playing with muted fallback:', err);
             vid.muted = true;
             vid
               .play()
@@ -92,27 +108,34 @@ export const Preloader: React.FC<PreloaderProps> = ({ data, onComplete }) => {
               })
               .catch((playErr) => {
                 console.error('Video playback failed:', playErr);
-                // In case of browser video error, smoothly transition to hero
                 triggerWhiteTransition();
               });
           });
       }
     } else {
-      // If already playing and tapped again, toggle pause/play
       vid.pause();
       setIsPlaying(false);
     }
-  }, [isTransitioning, isCompleted, triggerWhiteTransition]);
+  }, [isCompleted, triggerWhiteTransition]);
 
   if (isCompleted) return null;
 
   return (
     <div
       id="cinematic-preloader"
+      role="button"
+      tabIndex={0}
+      aria-label="بدء التجربة السينمائية لافتتاح دعوة الزفاف"
       onClick={handlePlayClick}
-      className="fixed inset-0 z-50 overflow-hidden bg-black select-none cursor-pointer flex items-center justify-center"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+          e.preventDefault();
+          handlePlayClick();
+        }
+      }}
+      className="fixed inset-0 z-50 overflow-hidden bg-black select-none cursor-pointer flex items-center justify-center focus:outline-hidden"
     >
-      {/* 1. Full-Screen Video with Multi-device Compatibility & Source Fallback */}
+      {/* 1. Full-Screen Video with Multi-device Compatibility */}
       <video
         ref={videoRef}
         playsInline
@@ -122,6 +145,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ data, onComplete }) => {
         disablePictureInPicture
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
+        onTimeUpdate={handleTimeUpdate}
         onEnded={triggerWhiteTransition}
         onError={() => {
           console.warn('Video failed to load, proceeding to hero.');
@@ -132,43 +156,28 @@ export const Preloader: React.FC<PreloaderProps> = ({ data, onComplete }) => {
         <source src={preloaderVideo} type="video/mp4" />
       </video>
 
-      {/* 2. Pure Minimal Text & Small Arrow without Background (Zero Clutter) */}
+      {/* 2. Pure Minimalist Arrow Pointing Up directly under the Bow (Zero Background & Lowered) */}
       <AnimatePresence>
         {!isPlaying && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center gap-1.5 text-center"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.25 } }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="absolute top-[76%] sm:top-[77%] md:top-[78%] left-[53%] -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center"
           >
-            {/* Minimal Text without background */}
-            <div className="flex items-center gap-2 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
-              <motion.div
-                animate={{ scale: [1, 1.25, 1], opacity: [0.85, 1, 0.85] }}
-                transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-              >
-                <Play className="w-3.5 h-3.5 fill-white text-white ml-0.5 drop-shadow-sm" />
-              </motion.div>
-
-              <span className="font-display-ar text-xs sm:text-sm md:text-base font-light tracking-[0.25em] text-[#FAF7F2] drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
-                اضغط لفتح الدعوة
-              </span>
-            </div>
-
-            {/* Small subtle bounce arrow */}
             <motion.div
-              animate={{ y: [0, 4, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
-              className="text-white/85 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)]"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+              className="text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]"
             >
-              <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.5]" />
+              <ChevronUp className="w-7 h-7 sm:w-8 sm:h-8 text-white stroke-[1.5]" />
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* 3. Apple-Grade Pure Luminous White Flash Bloom on finish */}
+      {/* 3. Smooth, Cinema-Grade Luminous Dissolve Bloom Starting in Last 2 Seconds */}
       <AnimatePresence>
         {isTransitioning && (
           <motion.div
@@ -176,17 +185,13 @@ export const Preloader: React.FC<PreloaderProps> = ({ data, onComplete }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{
-              duration: 0.45,
-              ease: [0.16, 1, 0.3, 1],
+              duration: 1.1,
+              ease: [0.22, 1, 0.36, 1],
             }}
-            className="fixed inset-0 z-50 bg-[#FFFFFF] pointer-events-none"
+            className="fixed inset-0 z-50 bg-[#FAF7F2] pointer-events-none"
           />
         )}
       </AnimatePresence>
     </div>
   );
 };
-
-
-
-

@@ -36,4 +36,5 @@ export interface GuestMessageEntry {
   message: string;
   timestamp: number;
   approved?: boolean;
+  capsuleType?: 'today' | 'anniversary'; // 'today' for wedding day or 'anniversary' for 1st wedding anniversary
 }
